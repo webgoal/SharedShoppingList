@@ -2,17 +2,15 @@ package io.github.felipebueno.sharedshoppinglist;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,25 +21,31 @@ public class MainActivity extends AppCompatActivity {
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
+		ArrayList<Item> items = new ArrayList<>();
+		final MainAdapter adapter = new MainAdapter(this, items);
+
+		ListView theListView = (ListView) findViewById(R.id.theListView);
+		theListView.setAdapter(adapter);
+
+		String[] itemList = {
+				"8 pães",
+				"1kg laranja",
+				"1pct arroz",
+				"1pct feijão",
+				"1 azeite"
+		};
+
+		for (String name : itemList) {
+			Item item = new Item(name);
+			adapter.add(item);
+		}
+
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-						.setAction("Action", null).show();
-			}
-		});
-
-
-		String[] things = {"this", "is", "my", "stuff", "blah", "1 fjdksl", "ruiweo", "0932dj", "2332409", "fjsdklfjdslkfj", "AHHHHHHHHHHH", "BBBBBBBBBBB", "VVVVVVVVVVVV"};
-		ListAdapter adapter = new MainAdapter(this, things);
-		ListView theListView = (ListView) findViewById(R.id.theListView);
-		theListView.setAdapter(adapter);
-
-		theListView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(MainActivity.this, "content->" + String.valueOf(parent.getItemAtPosition(position)) +  "\nparent->" + parent + "\nview->" + view + "\nposition->" + position + "\nid->" + id, Toast.LENGTH_SHORT).show();
+				Item item = new Item("rand->" + new Random().nextFloat());
+				adapter.add(item);
 			}
 		});
 	}
