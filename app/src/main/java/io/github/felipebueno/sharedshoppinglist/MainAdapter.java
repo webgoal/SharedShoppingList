@@ -1,6 +1,7 @@
 package io.github.felipebueno.sharedshoppinglist;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,13 +31,13 @@ public class MainAdapter extends ArrayAdapter<Item> {
 		final ImageButton btnDeleteItem = (ImageButton) v.findViewById(R.id.btn_delete_item);
 
 		tv.setText(item.name);
-		cb.setChecked(item.done);
+		cb.setChecked(item.isDone);
 		strikeThrough(item, tv);
 
 		cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				item.done = isChecked;
+				item.isDone = isChecked;
 				strikeThrough(item, tv);
 			}
 		});
@@ -51,9 +52,12 @@ public class MainAdapter extends ArrayAdapter<Item> {
 	}
 
 	private void strikeThrough(Item item, TextView tv) {
-		if (item.done)
+		if (item.isDone) {
 			tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-		else
+			tv.setTextColor(Color.LTGRAY);
+		} else {
 			tv.setPaintFlags(0);
+			tv.setTextColor(Color.DKGRAY);
+		}
 	}
 }

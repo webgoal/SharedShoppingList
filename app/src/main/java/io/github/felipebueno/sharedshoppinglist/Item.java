@@ -3,11 +3,11 @@ package io.github.felipebueno.sharedshoppinglist;
 public class Item {
 
 	public String name;
-	public boolean done;
+	public boolean isDone;
 
-	public Item(String name, boolean done) {
+	public Item(String name, boolean isDone) {
 		this.name = name;
-		this.done = done;
+		this.isDone = isDone;
 	}
 
 }
