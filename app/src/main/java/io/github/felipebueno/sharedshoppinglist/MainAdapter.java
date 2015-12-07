@@ -30,14 +30,14 @@ public class MainAdapter extends ArrayAdapter<Item> {
 		final ImageButton btnDeleteItem = (ImageButton) v.findViewById(R.id.btn_delete_item);
 
 		tv.setText(item.name);
+		cb.setChecked(item.done);
+		strikeThrough(item, tv);
 
 		cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (isChecked)
-					tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-				else
-					tv.setPaintFlags(0);
+				item.done = isChecked;
+				strikeThrough(item, tv);
 			}
 		});
 
@@ -48,5 +48,12 @@ public class MainAdapter extends ArrayAdapter<Item> {
 			}
 		});
 		return v;
+	}
+
+	private void strikeThrough(Item item, TextView tv) {
+		if (item.done)
+			tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		else
+			tv.setPaintFlags(0);
 	}
 }

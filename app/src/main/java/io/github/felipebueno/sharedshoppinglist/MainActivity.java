@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 		};
 
 		for (String name : itemList) {
-			Item item = new Item(name);
+			Item item = new Item(name, false);
 			adapter.add(item);
 		}
 
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 		builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Item item = new Item(input.getText().toString());
+				Item item = new Item(input.getText().toString(), false);
 				adapter.add(item);
 			}
 		});
