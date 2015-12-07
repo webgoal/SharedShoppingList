@@ -1,18 +1,24 @@
 package io.github.felipebueno.sharedshoppinglist;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+
+	MainAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 
 		ArrayList<Item> items = new ArrayList<>();
-		final MainAdapter adapter = new MainAdapter(this, items);
+		adapter = new MainAdapter(this, items);
 
 		ListView theListView = (ListView) findViewById(R.id.theListView);
 		theListView.setAdapter(adapter);
@@ -44,10 +50,34 @@ public class MainActivity extends AppCompatActivity {
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Item item = new Item("rand->" + new Random().nextFloat());
+				addItem();
+			}
+		});
+	}
+
+	private void addItem() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("What?");
+
+		final EditText input = new EditText(this);
+		input.setInputType(InputType.TYPE_CLASS_TEXT);
+		builder.setView(input);
+
+		builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Item item = new Item(input.getText().toString());
 				adapter.add(item);
 			}
 		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+
+		builder.show();
 	}
 
 
@@ -67,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.action_settings) {
+			Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
 			return true;
 		}
 
