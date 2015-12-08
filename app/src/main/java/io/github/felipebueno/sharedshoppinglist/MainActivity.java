@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 		ListView theListView = (ListView) findViewById(R.id.theListView);
 		theListView.setAdapter(adapter);
 
+		// START Dummy data
 		String[] itemList = {
 				"8 pães",
 				"1kg laranja",
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 			Item item = new Item(name, false);
 			adapter.add(item);
 		}
+		// END Dummy data
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +98,10 @@ public class MainActivity extends AppCompatActivity {
 		int id = item.getItemId();
 
 		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_sort_by_name) {
+			Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
+			return true;
+		} else if (id == R.id.action_sort_by_done) {
 			Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
 			return true;
 		}
