@@ -14,10 +14,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainAdapter extends ArrayAdapter<Item> {
+import sneer.android.PartnerSession;
 
-	public MainAdapter(Context context, ArrayList<Item> items) {
+
+public class MainAdapter extends ArrayAdapter<Item> {
+	PartnerSession session;
+
+
+	public MainAdapter(Context context, ArrayList<Item> items, PartnerSession session) {
 		super(context, R.layout.row_layout, items);
+		this.session = session;
 	}
 
 	@Override
@@ -45,7 +51,10 @@ public class MainAdapter extends ArrayAdapter<Item> {
 		btnDeleteItem.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				remove(item);
+				ArrayList<String> payload = new ArrayList<String>();
+				payload.add("remove");
+				payload.add(item.name);
+				session.send(payload);
 			}
 		});
 		return v;

@@ -16,37 +16,46 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import sneer.android.Message;
+import sneer.android.PartnerSession;
+
 public class MainActivity extends AppCompatActivity {
 
 	MainAdapter adapter;
 
+	PartnerSession session;
+
+	@Override
+	protected void onDestroy() {
+		session.close();
+		super.onDestroy();
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		session = PartnerSession.join(this, new PartnerSession.Listener() {
+			@Override
+			public void onUpToDate() {
+
+			}
+
+			@Override
+			public void onMessage(Message message) {
+				handle(message);
+			}
+		});
+
 		setContentView(R.layout.activity_main);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
 		ArrayList<Item> items = new ArrayList<>();
-		adapter = new MainAdapter(this, items);
+		adapter = new MainAdapter(this, items, session);
 
 		ListView theListView = (ListView) findViewById(R.id.theListView);
 		theListView.setAdapter(adapter);
-
-		// START Dummy data
-		String[] itemList = {
-				"8 pães",
-				"1kg laranja",
-				"1pct arroz",
-				"1pct feijão",
-				"1 azeite"
-		};
-
-		for (String name : itemList) {
-			Item item = new Item(name, false);
-			adapter.add(item);
-		}
-		// END Dummy data
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +64,27 @@ public class MainActivity extends AppCompatActivity {
 				addItem();
 			}
 		});
+	}
+
+	private void handle(Message message) {
+		if(message.payload() instanceof ArrayList) {
+
+			System.out.println("handle: " + message.payload());
+
+			ArrayList<String> payload = (ArrayList<String>) message.payload();
+			String action = payload.get(0);
+			String name = payload.get(1);
+			switch (action) {
+				case "add":
+					adapter.add(new Item(name, false));
+					break;
+				case "remove":
+					adapter.remove(new Item(name, false));
+					break;
+			}
+
+//			adapter.notifyDataSetChanged();
+		}
 	}
 
 	private void addItem() {
@@ -68,8 +98,10 @@ public class MainActivity extends AppCompatActivity {
 		builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Item item = new Item(input.getText().toString(), false);
-				adapter.add(item);
+				ArrayList<String> payload = new ArrayList<String>();
+				payload.add("add");
+				payload.add(input.getText().toString());
+				session.send(payload);
 			}
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
