@@ -18,12 +18,9 @@ import sneer.android.PartnerSession;
 
 
 public class MainAdapter extends ArrayAdapter<Item> {
-	PartnerSession session;
 
-
-	public MainAdapter(Context context, ArrayList<Item> items, PartnerSession session) {
+	public MainAdapter(Context context, ArrayList<Item> items) {
 		super(context, R.layout.row_layout, items);
-		this.session = session;
 	}
 
 	@Override
@@ -43,8 +40,10 @@ public class MainAdapter extends ArrayAdapter<Item> {
 		cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				item.isDone = isChecked;
-				strikeThrough(item, tv);
+				ArrayList<String> payload = new ArrayList<String>();
+				payload.add(isChecked ? "check" : "uncheck");
+				payload.add(item.name);
+				((MainActivity)getContext()).sendToSession(payload);
 			}
 		});
 
@@ -54,7 +53,7 @@ public class MainAdapter extends ArrayAdapter<Item> {
 				ArrayList<String> payload = new ArrayList<String>();
 				payload.add("remove");
 				payload.add(item.name);
-				session.send(payload);
+				((MainActivity)getContext()).sendToSession(payload);
 			}
 		});
 		return v;

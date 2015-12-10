@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +20,10 @@ import java.util.ArrayList;
 import sneer.android.Message;
 import sneer.android.PartnerSession;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements PartnerSession.Listener {
+	ArrayList<Item> items;
 	MainAdapter adapter;
+	ListView theListView;
 
 	PartnerSession session;
 
@@ -29,32 +31,23 @@ public class MainActivity extends AppCompatActivity {
 	protected void onDestroy() {
 		session.close();
 		super.onDestroy();
+
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		session = PartnerSession.join(this, new PartnerSession.Listener() {
-			@Override
-			public void onUpToDate() {
-
-			}
-
-			@Override
-			public void onMessage(Message message) {
-				handle(message);
-			}
-		});
+		session = PartnerSession.join(this, this);
 
 		setContentView(R.layout.activity_main);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		ArrayList<Item> items = new ArrayList<>();
-		adapter = new MainAdapter(this, items, session);
+		items = new ArrayList<>();
+		adapter = new MainAdapter(this, items);
 
-		ListView theListView = (ListView) findViewById(R.id.theListView);
+		theListView = (ListView) findViewById(R.id.theListView);
 		theListView.setAdapter(adapter);
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -68,22 +61,25 @@ public class MainActivity extends AppCompatActivity {
 
 	private void handle(Message message) {
 		if(message.payload() instanceof ArrayList) {
-
-			System.out.println("handle: " + message.payload());
-
 			ArrayList<String> payload = (ArrayList<String>) message.payload();
 			String action = payload.get(0);
 			String name = payload.get(1);
+			Item item = new Item(name, false);
 			switch (action) {
 				case "add":
-					adapter.add(new Item(name, false));
+					if(items.indexOf(item) < 0)
+						items.add(item);
 					break;
 				case "remove":
-					adapter.remove(new Item(name, false));
+					items.remove(item);
+					break;
+				case "check":
+					items.get(items.indexOf(item)).isDone = true;
+					break;
+				case "uncheck":
+					items.get(items.indexOf(item)).isDone = false;
 					break;
 			}
-
-//			adapter.notifyDataSetChanged();
 		}
 	}
 
@@ -139,5 +135,19 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onUpToDate() {
+		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onMessage(Message message) {
+		handle(message);
+	}
+
+	public void sendToSession(Object object){
+		session.send(object);
 	}
 }
