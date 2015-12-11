@@ -14,7 +14,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import sneer.android.PartnerSession;
+import io.github.felipebueno.sharedshoppinglist.actions.ItemAction;
+import io.github.felipebueno.sharedshoppinglist.actions.ItemCheckAction;
+import io.github.felipebueno.sharedshoppinglist.actions.ItemRemoveAction;
+import io.github.felipebueno.sharedshoppinglist.actions.ItemUncheckAction;
 
 
 public class MainAdapter extends ArrayAdapter<Item> {
@@ -40,20 +43,15 @@ public class MainAdapter extends ArrayAdapter<Item> {
 		cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				ArrayList<String> payload = new ArrayList<String>();
-				payload.add(isChecked ? "check" : "uncheck");
-				payload.add(item.name);
-				((MainActivity)getContext()).sendToSession(payload);
+				ItemAction action = isChecked ? new ItemCheckAction(item.name) : new ItemUncheckAction(item.name);
+				((MainActivity)getContext()).sendToSession(action);
 			}
 		});
 
 		btnDeleteItem.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ArrayList<String> payload = new ArrayList<String>();
-				payload.add("remove");
-				payload.add(item.name);
-				((MainActivity)getContext()).sendToSession(payload);
+				((MainActivity)getContext()).sendToSession(new ItemRemoveAction(item.name));
 			}
 		});
 		return v;

@@ -7,7 +7,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +16,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import io.github.felipebueno.sharedshoppinglist.actions.ItemAction;
+import io.github.felipebueno.sharedshoppinglist.actions.ItemAddAction;
 import sneer.android.Message;
 import sneer.android.PartnerSession;
 
@@ -60,27 +61,8 @@ public class MainActivity extends AppCompatActivity implements PartnerSession.Li
 	}
 
 	private void handle(Message message) {
-		if(message.payload() instanceof ArrayList) {
-			ArrayList<String> payload = (ArrayList<String>) message.payload();
-			String action = payload.get(0);
-			String name = payload.get(1);
-			Item item = new Item(name, false);
-			switch (action) {
-				case "add":
-					if(items.indexOf(item) < 0)
-						items.add(item);
-					break;
-				case "remove":
-					items.remove(item);
-					break;
-				case "check":
-					items.get(items.indexOf(item)).isDone = true;
-					break;
-				case "uncheck":
-					items.get(items.indexOf(item)).isDone = false;
-					break;
-			}
-		}
+		String messageJsonString = (String)message.payload();
+		ItemAction.fromJson(messageJsonString).run(items);
 	}
 
 	private void addItem() {
@@ -94,10 +76,7 @@ public class MainActivity extends AppCompatActivity implements PartnerSession.Li
 		builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				ArrayList<String> payload = new ArrayList<String>();
-				payload.add("add");
-				payload.add(input.getText().toString());
-				session.send(payload);
+				sendToSession(new ItemAddAction(input.getText().toString()));
 			}
 		});
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -147,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements PartnerSession.Li
 		handle(message);
 	}
 
-	public void sendToSession(Object object){
-		session.send(object);
+	public void sendToSession(ItemAction object){
+		session.send(object.toJson());
 	}
 }
