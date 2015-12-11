@@ -18,6 +18,9 @@ import java.util.ArrayList;
 
 import io.github.felipebueno.sharedshoppinglist.actions.ItemAction;
 import io.github.felipebueno.sharedshoppinglist.actions.ItemAddAction;
+import io.github.felipebueno.sharedshoppinglist.actions.ItemCheckAction;
+import io.github.felipebueno.sharedshoppinglist.actions.ItemRemoveAction;
+import io.github.felipebueno.sharedshoppinglist.actions.ItemUncheckAction;
 import sneer.android.Message;
 import sneer.android.PartnerSession;
 
@@ -50,6 +53,21 @@ public class MainActivity extends AppCompatActivity implements PartnerSession.Li
 
 		theListView = (ListView) findViewById(R.id.theListView);
 		theListView.setAdapter(adapter);
+
+		adapter.setOnItemCheckListener(new MainAdapter.OnItemCheckChangeListener() {
+			@Override
+			public void onItemCheckChange(Item item, boolean isChecked) {
+				ItemAction action = isChecked ? new ItemCheckAction(item.name) : new ItemUncheckAction(item.name);
+				MainActivity.this.sendToSession(action);
+			}
+		});
+
+		adapter.setOnItemRemoveListener(new MainAdapter.OnItemRemoveListener() {
+			@Override
+			public void onItemRemove(Item item) {
+				MainActivity.this.sendToSession(new ItemRemoveAction(item.name));
+			}
+		});
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {

@@ -10,6 +10,10 @@ public class Item {
 		this.isDone = isDone;
 	}
 
+	public void toggleChecked() {
+		isDone = !isDone;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -25,4 +29,5 @@ public class Item {
 	public int hashCode() {
 		return name.hashCode();
 	}
+
 }

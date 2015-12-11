@@ -14,16 +14,28 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import io.github.felipebueno.sharedshoppinglist.actions.ItemAction;
-import io.github.felipebueno.sharedshoppinglist.actions.ItemCheckAction;
-import io.github.felipebueno.sharedshoppinglist.actions.ItemRemoveAction;
-import io.github.felipebueno.sharedshoppinglist.actions.ItemUncheckAction;
-
-
 public class MainAdapter extends ArrayAdapter<Item> {
+	interface OnItemCheckChangeListener {
+		void onItemCheckChange(Item item, boolean isChecked);
+	}
+
+	interface OnItemRemoveListener {
+		void onItemRemove(Item item);
+	}
+
+	private OnItemCheckChangeListener onItemCheckChangeListener = null;
+	private OnItemRemoveListener onItemRemoveListener = null;
 
 	public MainAdapter(Context context, ArrayList<Item> items) {
 		super(context, R.layout.row_layout, items);
+	}
+
+	public void setOnItemCheckListener(OnItemCheckChangeListener onItemCheckChangeListener) {
+		this.onItemCheckChangeListener = onItemCheckChangeListener;
+	}
+
+	public void setOnItemRemoveListener(OnItemRemoveListener onItemRemoveListener) {
+		this.onItemRemoveListener = onItemRemoveListener;
 	}
 
 	@Override
@@ -43,15 +55,14 @@ public class MainAdapter extends ArrayAdapter<Item> {
 		cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				ItemAction action = isChecked ? new ItemCheckAction(item.name) : new ItemUncheckAction(item.name);
-				((MainActivity)getContext()).sendToSession(action);
+				onItemCheckChangeListener.onItemCheckChange(item, isChecked);
 			}
 		});
 
 		btnDeleteItem.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((MainActivity)getContext()).sendToSession(new ItemRemoveAction(item.name));
+				onItemRemoveListener.onItemRemove(item);
 			}
 		});
 		return v;
