@@ -28,7 +28,7 @@ dependencies {
   testCompile 'junit:junit:4.12'
   compile 'com.android.support:appcompat-v7:23.1.1'
   compile 'com.android.support:design:23.1.1'
-  compile 'me.sneer:sneer-android-api:0.1.7'
+  compile 'me.sneer:sneer-android-api:0.1.9@aar'
 
   compile 'com.fasterxml.jackson.core:jackson-core:2.7.0-rc1'
   compile 'com.fasterxml.jackson.core:jackson-databind:2.7.0-rc1'
