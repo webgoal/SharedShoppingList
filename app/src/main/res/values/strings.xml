@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Shared Shopping List</string>
+    <string name="app_name">ToDo/Shopping List</string>
     <string name="dummy_text">dummy text</string>
 </resources>
