@@ -1,8 +1,8 @@
-package io.github.felipebueno.sharedshoppinglist.actions;
+package br.com.webgoal.sharedshoppinglist.actions;
 
 import java.util.ArrayList;
 
-import io.github.felipebueno.sharedshoppinglist.Item;
+import br.com.webgoal.sharedshoppinglist.Item;
 
 public class ItemCheckAction extends ItemAction {
 

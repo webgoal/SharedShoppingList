@@ -5,7 +5,7 @@ android {
   buildToolsVersion "23.0.1"
 
   defaultConfig {
-    applicationId "io.github.felipebueno.sharedshoppinglist"
+    applicationId "br.com.webgoal.sharedshoppinglist"
     minSdkVersion 16
     targetSdkVersion 23
     versionCode 1

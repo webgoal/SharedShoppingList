@@ -1,4 +1,4 @@
-package io.github.felipebueno.sharedshoppinglist;
+package br.com.webgoal.sharedshoppinglist;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -7,20 +7,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import io.github.felipebueno.sharedshoppinglist.actions.ItemAction;
-import io.github.felipebueno.sharedshoppinglist.actions.ItemAddAction;
-import io.github.felipebueno.sharedshoppinglist.actions.ItemCheckAction;
-import io.github.felipebueno.sharedshoppinglist.actions.ItemRemoveAction;
-import io.github.felipebueno.sharedshoppinglist.actions.ItemUncheckAction;
+import br.com.webgoal.sharedshoppinglist.actions.ItemAction;
+import br.com.webgoal.sharedshoppinglist.actions.ItemAddAction;
+import br.com.webgoal.sharedshoppinglist.actions.ItemCheckAction;
+import br.com.webgoal.sharedshoppinglist.actions.ItemRemoveAction;
+import br.com.webgoal.sharedshoppinglist.actions.ItemUncheckAction;
 import sneer.android.Message;
 import sneer.android.PartnerSession;
 
@@ -105,33 +102,6 @@ public class MainActivity extends AppCompatActivity implements PartnerSession.Li
 		});
 
 		builder.show();
-	}
-
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_sort_by_name) {
-			Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
-			return true;
-		} else if (id == R.id.action_sort_by_done) {
-			Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

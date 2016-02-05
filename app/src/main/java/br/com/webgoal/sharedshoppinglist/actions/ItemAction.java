@@ -1,4 +1,4 @@
-package io.github.felipebueno.sharedshoppinglist.actions;
+package br.com.webgoal.sharedshoppinglist.actions;
 
 import android.support.annotation.NonNull;
 
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import io.github.felipebueno.sharedshoppinglist.Item;
+import br.com.webgoal.sharedshoppinglist.Item;
 
 public abstract class ItemAction {
     protected String name;

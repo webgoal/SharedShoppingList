@@ -1,9 +1,9 @@
-package io.github.felipebueno.sharedshoppinglist;
+package br.com.webgoal.sharedshoppinglist;
 
 import org.junit.Test;
 
-import io.github.felipebueno.sharedshoppinglist.actions.ItemAction;
-import io.github.felipebueno.sharedshoppinglist.actions.ItemAddAction;
+import br.com.webgoal.sharedshoppinglist.actions.ItemAction;
+import br.com.webgoal.sharedshoppinglist.actions.ItemAddAction;
 
 import static org.junit.Assert.*;
 

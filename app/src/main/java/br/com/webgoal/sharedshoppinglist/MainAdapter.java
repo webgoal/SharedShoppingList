@@ -1,4 +1,4 @@
-package io.github.felipebueno.sharedshoppinglist;
+package br.com.webgoal.sharedshoppinglist;
 
 import android.content.Context;
 import android.graphics.Color;

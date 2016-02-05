@@ -1,4 +1,4 @@
-package io.github.felipebueno.sharedshoppinglist;
+package br.com.webgoal.sharedshoppinglist;
 
 public class Item {
 
