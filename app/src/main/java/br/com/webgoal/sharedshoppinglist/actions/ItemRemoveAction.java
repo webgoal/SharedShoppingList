@@ -13,6 +13,7 @@ public class ItemRemoveAction extends ItemAction {
     }
 
     public void run(ArrayList<Item> items) {
-        items.remove(itemFromList(items));
+        int index = itemFromList(items);
+        if (index > 0) items.remove(index);
     }
 }
